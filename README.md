@@ -59,6 +59,7 @@ versa).
 1. Download and use Pandas to read in the following dataset: http://archive.ics.uci.edu/ml/datasets/Echocardiogram
 2. Choose some features to plot (these should be different from your group members)
 3. You can use a similar approach to part I or you may get creative.  The intent is for you to explore the dataset using visualization as your primary tool.  Please also refer to the reading for other ideas on plotting
+4. Submit a ~1 page writeup comparing your plots to those from your team.  What do your plots tell you about the data that the other plots do not?  Does comparing your plots to others give you ideas on what else to plot?  Is visually exploring the data useful?  Why or why not?
 
 ## Final Comments
 
