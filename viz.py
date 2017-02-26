@@ -17,7 +17,7 @@ def readCSV(filepath):
     # Open the file for reading
     file = open(norm_filepath, 'r')
 
-    # Generate a rec array from the text and skip the first column
+    # Generate a data frame from the text and skip the first row as it is header
     data = pd.read_csv(norm_filepath, delimiter=',', header=0)
     file.close()
     return data
@@ -41,19 +41,18 @@ def plot(data):
 
     # Get CTM 1 and CTM2 for patients without CHF
     df4 = df1[df1['class'] == 0]
-    x2= df4['ctm1']
-    y2= df4['ctm2']
+    x2 = df4['ctm1']
+    y2 = df4['ctm2']
 
-    # Age and Length of stay for CHF patients
+    # Age and Length of stay for patients with CHF
     df5 = df2[df2['class'] == 1]
-    x3= df5['age']
-    y3=df5['length-of-stay']
+    x3 = df5['age']
+    y3 = df5['length-of-stay']
 
     # Age and Length of stay for patients without CHF
     df6 = df2[df2['class'] == 0]
     x4 = df6['age']
     y4 = df6['length-of-stay']
-
 
     # Create a 2 by 3 plot and add the plot of the first position
     ax1 = fig.add_subplot(231)
@@ -81,8 +80,9 @@ def plot(data):
     plt.xlabel('Age')
     plt.ylabel('LOS')
 
-    # CTM1 and CTM2 for all patients
+    # Plot CTM1 and CTM2 for all patients
 
+    # Add this sub plot to the third position
     ax3 = fig.add_subplot(233)
 
     # Add markers and legends to the plot
@@ -94,11 +94,11 @@ def plot(data):
     plt.xlabel('CTM1')
     plt.ylabel('CTM2')
 
-    # Add the position of the legend
+    # Add position to the legend
     plt.legend(loc='lower left')
 
-
     # Plot CTM1 Versus CTM2 for patients without CHF
+    # Add this sub plot to the fourth position
     ax4 = fig.add_subplot(234)
     ax4.scatter(x2, y2)
     plt.title('Patients w/o CHF')
@@ -106,14 +106,15 @@ def plot(data):
     plt.ylabel('CTM2')
 
     # Plot age and length of stay for patients without CHF
-
+    # Add this sub plot to the fifth position
     ax5 = fig.add_subplot(235)
     ax5.scatter(x4, y4)
     plt.title('Patients w/o CHF')
     plt.xlabel('Age')
     plt.ylabel('LOS')
 
-    # age and los for all patients
+    # Plot age and length of stay for all patients
+    # Add this sub plot to the sixth position
     ax6 = fig.add_subplot(236)
     ax6.scatter(x3, y3, color='b', marker='x', label='w/CHF')
     ax6.scatter(x4, y4, color='r', marker='^', label='w/o CHF')
