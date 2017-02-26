@@ -29,56 +29,76 @@ def plot(data):
     :param data frame
     :return a figure with 6 subplots of 3 columns and 2 rows
     """
-
-    # ctm 1 and ctm2 for all patients
-    df=data
-    df1= df.loc[:,['ctm1','ctm2','class']]
-
-    df4 = df.loc[:, ['age', 'length-of-stay', 'class']]
-    df5 = df4[df4['class'] == 1]
-
-    x1=df1['ctm1']
-    y1=df1['ctm2']
-
-    ## Ctm1 and ctm2 for non chf patients
-    df2 = df1[df1['class'] == 0]
-    x2=df2['ctm1']
-    y2=df2['ctm2']
+    fig = plt.figure()
+    df1 = data.loc[:, ['ctm1', 'ctm2', 'class']]
+    df2 = data.loc[:, ['age', 'length-of-stay', 'class']]
 
     ## ctm1 and ctm2 for chf patients
     df3 = df1[df1['class'] == 1]
-    x3=df3['ctm1']
-    y3=df3['ctm2']
+    x1 = df1['ctm1']
+    y1 = df1['ctm2']
+    ax1 = fig.add_subplot(231)
+    ax1.scatter(x1, y1)
+    plt.title("Patients w/ CHF")
+    plt.xlabel("CTM1")
+    plt.ylabel('CTM2')
 
-    ## age and los for all patients
-
-    x4=df4['age']
-    y4=df4['length-of-stay']
 
     ## age and los for chf patients
+    df4 = df2[df2['class'] == 1]
 
-    x5=df5['age']
-    y5=df5['length-of-stay']
+    x2 = df4['age']
+    y2 = df4['length-of-stay']
+    ax2 = fig.add_subplot(232)
+    ax2.scatter(x2, y2)
+    plt.title("Patients w/ CHF")
+    plt.xlabel("Age")
+    plt.ylabel('LOS')
+
+
+    # ctm 1 and ctm2 for all patients
+
+    x3 = df1['ctm1']
+    y3 = df1['ctm2']
+
+    ax3 = fig.add_subplot(233)
+    ax3.scatter(x3, y3)
+    plt.title("All patients / CTM")
+    plt.xlabel("CTM1")
+    plt.ylabel('CTM2')
+
+    ## Ctm1 and ctm2 for non chf patients
+    df5 = df1[df1['class'] == 0]
+    x4 = df5['ctm1']
+    y4 = df5['ctm2']
+    ax4 = fig.add_subplot(234)
+    ax4.scatter(x4, y4)
+    plt.title("Patients w/o CHF")
+    plt.xlabel("CTM1")
+    plt.ylabel('CTM2')
 
 
     ## age and los for non chf patients
-    df5 = df4[df4['class'] == 0]
-    x6=df5['age']
-    y6=df5['length-of-stay']
-    fig=plt.figure()
-    ax1=fig.add_subplot(231)
+    df6 = df2[df2['class'] == 0]
+    x5 = df6['age']
+    y5 = df6['length-of-stay']
+    ax5 = fig.add_subplot(235)
+    ax5.scatter(x5, y5)
+    plt.title("Patients w/o CHF")
+    plt.xlabel("age")
+    plt.ylabel('LOS')
 
-    ax1.scatter(x1,y1)
-    ax2=fig.add_subplot(232)
-    ax2.scatter(x2,y2)
-    ax3=fig.add_subplot(233)
-    ax3.scatter(x3,y3)
-    ax4=fig.add_subplot(234)
-    ax4.scatter(x4,y4)
-    ax5=fig.add_subplot(235)
-    ax5.scatter(x5,y5)
-    ax6=fig.add_subplot(236)
-    ax6.scatter(x6,y6)
+    ## age and los for all patients
+
+    x6 = df2['age']
+    y6 = df2['length-of-stay']
+    ax6 = fig.add_subplot(236)
+    ax6.scatter(x6, y6)
+    plt.title("All patients / Age/LOS")
+    plt.xlabel("Age")
+    plt.ylabel('LOS')
+
+
 
 
 if __name__ == '__main__':
