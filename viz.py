@@ -116,8 +116,8 @@ def plot(data):
     # Plot age and length of stay for all patients
     # Add this sub plot to the sixth position
     ax6 = fig.add_subplot(236)
-    ax6.scatter(x3, y3, color='b', marker='x', label='w/CHF')
-    ax6.scatter(x4, y4, color='r', marker='^', label='w/o CHF')
+    ax6.scatter(x3, y3, color='r', marker='x', label='w/CHF')
+    ax6.scatter(x4, y4, color='b', marker='^', label='w/o CHF')
     ax6.set_xlim([-10, 80])
     ax6.set_ylim([-50, 400])
     plt.title('All patients / Age/LOS')
