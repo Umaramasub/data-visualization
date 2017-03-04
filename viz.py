@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 def readCSV(filepath):
-    """filepath is provided as a string representing an absolute path to the CSV
+    """filepath is provided as a string representing the path to the CSV
     file. The function will open this file, read in the contents, close the
     file, and then return the contents as a dataframe
     :param filepath:string as the absolute path to the file
@@ -23,7 +23,7 @@ def readCSV(filepath):
 
 
 def plot(data):
-    """data is a data frame containing the all the data
+    """data is a data frame containing the the data
     :param data frame
     :return a figure with 6 subplots of 3 columns and 2 rows
     """
@@ -139,7 +139,7 @@ def readCSV_ecg(filepath):
     # Open the file for reading
     file = open(norm_filepath, 'r')
 
-    # Generate a data frame from the text and skip the first column as it is header
+    # Generate a data frame from the text and add column names
     data = pd.read_csv(norm_filepath, delimiter=',', header=None, na_values='?', names=[
         'survival', 'still-alive', 'age-at-heart-attack', 'pericardial effusion',
         'fractional-shortening', 'epss', 'lvdd', 'wall-motion-score', 'wall-motion-index', 'mult', 'name', 'group',
@@ -160,10 +160,10 @@ def ecg_plot(data):
     #  Get box plot for patients alive at end of one year
     alive_df1 = df1[df1['still-alive'] == 1]
 
-    # Remove nas from the data set as box plot does not work with missing varaibles
+    # Remove nas from the data set as box plot does not work with missing variables
     x1 = alive_df1['age-at-heart-attack'].dropna()
 
-    #  Get box plot for patients dead at end of one year
+    #  Get box plot for patients who are dead at end of one year
     dead_df1 = df1[df1['still-alive'] == 0]
     x2 = dead_df1['age-at-heart-attack'].dropna()
 
@@ -185,32 +185,32 @@ def ecg_plot(data):
 
     # Normalize the data to enable comparison
 
-    a_mean1 = (alive_df2['fractional-shortening']/max(data['fractional-shortening'])).mean()
-    a_mean2 = (alive_df2['epss']/max(data['epss'])).mean()
-    a_mean3 = (alive_df2['wall-motion-index']/max(data['wall-motion-index'])).mean()
-    a_mean4 = (alive_df2['lvdd']/max(data['lvdd'])).mean()
+    a_mean1 = (alive_df2['fractional-shortening'] / max(data['fractional-shortening'])).mean()
+    a_mean2 = (alive_df2['epss'] / max(data['epss'])).mean()
+    a_mean3 = (alive_df2['wall-motion-index'] / max(data['wall-motion-index'])).mean()
+    a_mean4 = (alive_df2['lvdd'] / max(data['lvdd'])).mean()
 
     data_alive = [a_mean1, a_mean2, a_mean3, a_mean4]
 
     # Get the mean  of all the features for patients who are dead to compare
     dead_df2 = df2[df2['still-alive'] == 0]
 
-    d_mean1 = (dead_df2['fractional-shortening']/max(data['fractional-shortening'])).mean()
-    d_mean2 = (dead_df2['epss']/max(data['epss'])).mean()
-    d_mean3 = (dead_df2['wall-motion-index']/max(data['wall-motion-index'])).mean()
-    d_mean4 = (dead_df2['lvdd']/max(data['lvdd'])).mean()
+    d_mean1 = (dead_df2['fractional-shortening'] / max(data['fractional-shortening'])).mean()
+    d_mean2 = (dead_df2['epss'] / max(data['epss'])).mean()
+    d_mean3 = (dead_df2['wall-motion-index'] / max(data['wall-motion-index'])).mean()
+    d_mean4 = (dead_df2['lvdd'] / max(data['lvdd'])).mean()
 
     data_dead = [d_mean1, d_mean2, d_mean3, d_mean4]
 
-    # Add the postion of the left side of bar along with colors
+    # Add the position of the left side of bar along with colors
 
-    p1 = plt.bar([2, 5, 8, 11], data_alive, color='b')
-    p2 = plt.bar([1, 4, 7, 10], data_dead, color='r')
+    p1 = ax2.bar([2, 5, 8, 11], data_alive, color='b')
+    p2 = ax2.bar([1, 4, 7, 10], data_dead, color='r')
 
     plt.ylabel('Value')
-    plt.title('Contractile factors affecting morbidity')
+    plt.title('Contractile factors affecting mortality')
     plt.xticks([2, 5, 8, 11], ('Fract_short', 'EPSS', 'WMI', 'LVDD'))
-    plt.legend((p1[0], p2[0]), ('Dead', 'Alive'))
+    plt.legend((p1[0], p2[0]), ('Dead', 'Alive'),loc ='upper left')
 
     # Comparison of Scatter plot of age of heart attack with EPSS with patients
 
@@ -310,7 +310,4 @@ if __name__ == '__main__':
     ecg_plot(data_ecg)
     plt.show()
 
-    print max(data_ecg['fractional-shortening'])
-    print max(data_ecg['epss'])
-    print max(data_ecg['wall-motion-index'])
-    print max(data_ecg['lvdd'])
+
