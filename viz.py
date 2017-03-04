@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 def readCSV(filepath):
@@ -125,6 +126,7 @@ def plot(data):
     plt.ylabel('LOS')
     plt.legend(loc='lower left')
 
+
 def readCSV_ecg(filepath):
     """filepath is provided as a string representing an absolute path to the CSV
     file. The function will open this file, read in the contents, close the
@@ -148,8 +150,155 @@ def readCSV_ecg(filepath):
     return data
 
 
+def ecg_plot(data):
+    fig = plt.figure()
 
+    # Box plot giving the age of heart attack with survival
+    ax1 = fig.add_subplot(231)
 
+    # Create subset of the data selecting the required columns
+    df1 = data.loc[:, ['age-at-heart-attack', 'still-alive']]
+
+    #  Get box plot for patients alive at end of one year
+    alive_df1 = df1[df1['still-alive'] == 1]
+
+    # Remove nas from the data set as box plot does not work with missing varaibles
+    x1 = alive_df1['age-at-heart-attack'].dropna()
+
+    #  Get box plot for patients dead at end of one year
+    dead_df1 = df1[df1['still-alive'] == 0]
+    x2 = dead_df1['age-at-heart-attack'].dropna()
+
+    # Form a list of the points to be plotted
+    data_AHA = [x1, x2]
+
+    ax1.boxplot(data_AHA, labels=["Alive", 'Dead'])
+    ax1.set_title("Comparison of age of heart attack with survival")
+    ax1.set_xlabel('Status')
+    ax1.set_ylabel('Age of heart attack')
+
+    # Bar plots comparing the contractile features of heart with survival
+    ax2 = fig.add_subplot(232)
+    df2 = data.loc[:, ['fractional-shortening', 'epss', 'wall-motion-index', 'lvdd', 'still-alive']]
+    # Form a subdata set with features for patients who are alive at end of one year
+    alive_df2 = df2[df2['still-alive'] == 1]
+
+    # Get the median of all the features for patients who are alive to compare
+
+    a_med1 = alive_df2['fractional-shortening'].median()
+    a_med2 = alive_df2['epss'].median()
+    a_med3 = alive_df2['wall-motion-index'].median()
+    a_med4 = alive_df2['lvdd'].median()
+
+    data_alive = [a_med1, a_med2, a_med3, a_med4]
+
+    # Get the median of all the features for patients who are dead to compare
+    dead_df2 = df2[df2['still-alive'] == 0]
+
+    d_med1 = dead_df2['fractional-shortening'].median()
+    d_med2 = dead_df2['epss'].median()
+    d_med3 = dead_df2['wall-motion-index'].median()
+    d_med4 = dead_df2['lvdd'].median()
+
+    data_dead = [d_med1, d_med2, d_med3, d_med4]
+
+    # Add the postion of the left side of bar along with colors
+
+    p1 = plt.bar([2, 5, 8, 11], data_alive, color='b')
+    p2 = plt.bar([1, 4, 7, 10], data_dead, color='r')
+
+    plt.ylabel('Value')
+    plt.title('Contractile factors affecting morbidity')
+    plt.xticks([2, 5, 8, 11], ('Fract_short', 'EPSS', 'WMI', 'LVDD'))
+    plt.legend((p1[0], p2[0]), ('Dead', 'Alive'))
+
+    # Comparison of Scatter plot of age of heart attack with EPSS with patients
+
+    ax3 = fig.add_subplot(233)
+    df3 = data.loc[:, ['age-at-heart-attack', 'epss', 'still-alive']]
+    alive_df3 = df3[df3['still-alive'] == 1]
+    alive_x1 = alive_df3['age-at-heart-attack']
+    alive_y1 = alive_df3['epss']
+
+    dead_df3 = df3[df1['still-alive'] == 0]
+    dead_x1 = dead_df3['age-at-heart-attack']
+    dead_y1 = dead_df3['epss']
+
+    ax3.scatter(alive_x1, alive_y1, color='b', marker='^', label='Alive')
+    ax3.scatter(dead_x1, dead_y1, color='r', marker='x', label='Dead')
+
+    plt.title('All patients with heart attack')
+    plt.xlabel('Age-at-heart-attack')
+    plt.ylabel('EPSS')
+    plt.legend(loc='upper right')
+
+    # Comparison of scatter plot of wall motion index and age of heart attack
+    ax4 = fig.add_subplot(234)
+
+    df4 = data.loc[:, ['age-at-heart-attack', 'wall-motion-index', 'still-alive']]
+    alive_df4 = df4[df4['still-alive'] == 1]
+    alive_x1 = alive_df4['age-at-heart-attack']
+    alive_y1 = alive_df4['wall-motion-index']
+
+    dead_df4 = df4[df4['still-alive'] == 0]
+    dead_x1 = dead_df4['age-at-heart-attack']
+    dead_y1 = dead_df4['wall-motion-index']
+
+    ax4.scatter(alive_x1, alive_y1, color='b', marker='^', label='Alive')
+    ax4.scatter(dead_x1, dead_y1, color='r', marker='x', label='Dead')
+
+    plt.title('All patients with heart attack')
+    plt.xlabel('age-at-heart-attack')
+    plt.ylabel('wall-motion-index')
+    plt.legend(loc='upper right')
+
+    # Presence of cardiac effusion affecting age of heart attack
+
+    ax5 = fig.add_subplot(235)
+
+    # Create subset of the data selecting the required columns
+    df5 = data.loc[:, ['age-at-heart-attack', 'pericardial effusion']]
+
+    #  Get box plot for patients with pericardial effusion
+    peri_eff = df5[df5['pericardial effusion'] == 1]
+
+    # Remove nas from the data set as box plot does not work with missing varaibles
+    x1 = peri_eff['age-at-heart-attack'].dropna()
+
+    #  Get box plot for patients dead at end of one year
+    no_peri_eff = df5[df5['pericardial effusion'] == 0]
+    x2 = no_peri_eff['age-at-heart-attack'].dropna()
+
+    # Form a list of the points to be plotted
+    data_plot = [x1, x2]
+
+    ax5.boxplot(data_plot, labels=["w/effusion", 'w/o effusion'])
+    ax5.set_title("Comparison of age of heart attack with pericardial effusion")
+    ax5.set_xlabel('Status of effusion')
+    ax5.set_ylabel('Age of heart attack')
+
+    # Presence of pericardial effusion affecting contractility of heart
+
+    ax6 = fig.add_subplot(236)
+
+    df6 = data.loc[:, ['lvdd', 'epss', 'pericardial effusion']]
+    peri_eff = df6[df6['pericardial effusion'] == 1]
+    pe_x1 = peri_eff['lvdd']
+    pe_y1 = peri_eff['epss']
+
+    no_pe_eff = df6[df6['pericardial effusion'] == 0]
+    no_pe_x1 = no_pe_eff['lvdd']
+    no_pe_y1 = no_pe_eff['epss']
+
+    ax6.scatter(no_pe_x1, no_pe_y1, color='b', marker='^', label='w/pericardial effusion')
+    ax6.scatter(pe_x1, pe_y1, color='r', marker='x', label='w/o pericardial effusion')
+
+    plt.title('All patients with pericardial effusion')
+    plt.xlabel('LVDD')
+    plt.ylabel('EPSS')
+    plt.legend(loc='upper left')
+    ax6.set_xlim([2, 8])
+    ax6.set_ylim([0, 40])
 
 
 if __name__ == '__main__':
@@ -157,3 +306,6 @@ if __name__ == '__main__':
     plot(data)
     plt.show()
 
+    data_ecg = readCSV_ecg("data2.csv")
+    ecg_plot(data_ecg)
+    plt.show()
