@@ -1,8 +1,6 @@
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
-import numpy as np
-
 
 def readCSV(filepath):
     """filepath is provided as a string representing an absolute path to the CSV
@@ -183,24 +181,26 @@ def ecg_plot(data):
     # Form a subdata set with features for patients who are alive at end of one year
     alive_df2 = df2[df2['still-alive'] == 1]
 
-    # Get the median of all the features for patients who are alive to compare
+    # Get the mean of all the features for patients who are alive to compare
 
-    a_med1 = alive_df2['fractional-shortening'].median()
-    a_med2 = alive_df2['epss'].median()
-    a_med3 = alive_df2['wall-motion-index'].median()
-    a_med4 = alive_df2['lvdd'].median()
+    # Normalize the data to enable comparison
 
-    data_alive = [a_med1, a_med2, a_med3, a_med4]
+    a_mean1 = (alive_df2['fractional-shortening']/max(data['fractional-shortening'])).mean()
+    a_mean2 = (alive_df2['epss']/max(data['epss'])).mean()
+    a_mean3 = (alive_df2['wall-motion-index']/max(data['wall-motion-index'])).mean()
+    a_mean4 = (alive_df2['lvdd']/max(data['lvdd'])).mean()
 
-    # Get the median of all the features for patients who are dead to compare
+    data_alive = [a_mean1, a_mean2, a_mean3, a_mean4]
+
+    # Get the mean  of all the features for patients who are dead to compare
     dead_df2 = df2[df2['still-alive'] == 0]
 
-    d_med1 = dead_df2['fractional-shortening'].median()
-    d_med2 = dead_df2['epss'].median()
-    d_med3 = dead_df2['wall-motion-index'].median()
-    d_med4 = dead_df2['lvdd'].median()
+    d_mean1 = (dead_df2['fractional-shortening']/max(data['fractional-shortening'])).mean()
+    d_mean2 = (dead_df2['epss']/max(data['epss'])).mean()
+    d_mean3 = (dead_df2['wall-motion-index']/max(data['wall-motion-index'])).mean()
+    d_mean4 = (dead_df2['lvdd']/max(data['lvdd'])).mean()
 
-    data_dead = [d_med1, d_med2, d_med3, d_med4]
+    data_dead = [d_mean1, d_mean2, d_mean3, d_mean4]
 
     # Add the postion of the left side of bar along with colors
 
@@ -309,3 +309,8 @@ if __name__ == '__main__':
     data_ecg = readCSV_ecg("data2.csv")
     ecg_plot(data_ecg)
     plt.show()
+
+    print max(data_ecg['fractional-shortening'])
+    print max(data_ecg['epss'])
+    print max(data_ecg['wall-motion-index'])
+    print max(data_ecg['lvdd'])
