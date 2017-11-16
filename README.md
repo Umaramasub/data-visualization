@@ -1,17 +1,17 @@
 # Visualization Lab #
 The goal of this lab is to explore different visualization tools to extract meaning of the data
 
-There are two types of data files:
-Data.csv 
-Attribute information
-1.CTM1 -- float Mathematical conversion of ECG findings.
-2.CTM2 -- float Mathematical conversion of ECG findings.
-3.Age -- Numeric denoting age of patient.
-4.Length of stay -- Numeric denoting the number of daya patient in the hopsital.
-5.class -- binary variable denoting if the patient had congestive heart failure or not.
+There are two types of data files:  
+Data.csv  
+Attribute information  
+1.CTM1 -- float Mathematical conversion of ECG findings.  
+2.CTM2 -- float Mathematical conversion of ECG findings.  
+3.Age -- Numeric denoting age of patient.  
+4.Length of stay -- Numeric denoting the number of daya patient in the hopsital.  
+5.class -- binary variable denoting if the patient had congestive heart failure or not.  
 
-Data2.csv
-Attribute information
+Data2.csv  
+Attribute information  
 1. survival -- the number of months patient survived (has survived, if patient is still alive). Because all the patients had their heart attacks at different times, it is possible that some patients have survived less than one year but they are still alive. Check the second variable to confirm this. Such patients cannot be used for the prediction task mentioned above. 
 2. still-alive -- a binary variable. 0=dead at end of survival period, 1 means still alive 
 3. age-at-heart-attack -- age in years when heart attack occurred 
